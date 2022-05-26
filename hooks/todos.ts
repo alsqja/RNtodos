@@ -74,3 +74,20 @@ export const useEditTodo = () => {
 
   return [run, response] as [typeof run, typeof response];
 };
+
+export const useDeleteTodo = () => {
+  const [request, response] = useAxios();
+
+  const run = useCallback(
+    async (id: number) => {
+      const user_id = await AsyncStorage.getItem("userId");
+      return request({
+        url: `/todo/${id}/user/${user_id}`,
+        method: "DELETE",
+      });
+    },
+    [request]
+  );
+
+  return [run, response] as [typeof run, typeof response];
+};

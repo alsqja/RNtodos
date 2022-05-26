@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTodoList } from "../../hooks/todos";
 import { CreateTodo } from "../CreateTodo";
 import styled from "styled-components/native";
 import { TodoBox } from "../TodoBox";
 import { theme } from "../../styled/theme";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 interface ITodos {
   id: number;
@@ -59,10 +60,16 @@ export const Total = ({ navigation }: any) => {
           setTodos([newTodo, ...todos]);
         }}
       />
-      {todos.map((todo) => {
+      {/* {todos.map((todo) => {
         return <TodoBox key={todo.id} todo={todo} />;
-      })}
-      {isGotAllTodos ? (
+      })} */}
+      <TodoBox
+        todos={todos}
+        setTodos={setTodos}
+        isGotAllTodos={isGotAllTodos}
+        req={requestQuery}
+      />
+      {/* {isGotAllTodos ? (
         <GotAll>모든 TODO를 불러왔습니다.</GotAll>
       ) : (
         todos.length !== 0 && (
@@ -74,12 +81,12 @@ export const Total = ({ navigation }: any) => {
             <GotAll>더보기</GotAll>
           </TouchableOpacity>
         )
-      )}
+      )} */}
     </TodoContainer>
   );
 };
 
-const TodoContainer = styled.ScrollView`
+const TodoContainer = styled.View`
   flex: 1;
   flex-direction: column;
 `;
@@ -93,3 +100,45 @@ const GotAll = styled.Text`
   text-align: center;
   /* border-top: 1px solid black; */
 `;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  backTextWhite: {
+    color: "#FFF",
+  },
+  rowFront: {
+    alignItems: "center",
+    backgroundColor: "#CCC",
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    justifyContent: "center",
+    height: 50,
+  },
+  rowBack: {
+    alignItems: "center",
+    backgroundColor: "#DDD",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: "center",
+    bottom: 0,
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    width: 75,
+  },
+  backRightBtnLeft: {
+    backgroundColor: "blue",
+    right: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: "red",
+    right: 0,
+  },
+});

@@ -65,7 +65,7 @@ export const Today = ({ navigation }: any) => {
           setTodos([newTodo, ...todos]);
         }}
       />
-      {todos.map((todo) => {
+      {/* {todos.map((todo) => {
         return <TodoBox key={todo.id} todo={todo} />;
       })}
       {isGotAllTodos ? (
@@ -80,12 +80,18 @@ export const Today = ({ navigation }: any) => {
             <GotAll>더보기</GotAll>
           </TouchableOpacity>
         )
-      )}
+      )} */}
+      <TodoBox
+        todos={todos}
+        setTodos={setTodos}
+        isGotAllTodos={isGotAllTodos}
+        req={requestQuery}
+      />
     </TodoContainer>
   );
 };
 
-const TodoContainer = styled.ScrollView`
+const TodoContainer = styled.View`
   flex: 1;
   flex-direction: column;
 `;

@@ -23,20 +23,20 @@ import { Edit } from "./pages/Edit";
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [time, setTime] = React.useState(Date());
-  React.useEffect(() => {
-    setInterval(() => {
-      setTime(Date());
-    }, 1000);
-  }, []);
+  // const [time, setTime] = React.useState(Date());
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     setTime(Date());
+  //   }, 1000);
+  // }, []);
 
   return (
     <NavigationContainer>
       <RecoilRoot>
         <Container>
-          <Text style={{ color: "white", marginLeft: 40, marginTop: 10 }}>
+          {/* <Text style={{ color: "white", marginLeft: 40, marginTop: 10 }}>
             {time}
-          </Text>
+          </Text> */}
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={All} />
             <Stack.Screen name="Signin" component={Signin} />

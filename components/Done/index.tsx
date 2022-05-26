@@ -57,7 +57,13 @@ export const Done = ({ navigation }: any) => {
 
   return (
     <TodoContainer>
-      {todos.map((todo) => {
+      <TodoBox
+        todos={todos}
+        setTodos={setTodos}
+        isGotAllTodos={isGotAllTodos}
+        req={requestQuery}
+      />
+      {/* {todos.map((todo) => {
         return <TodoBox key={todo.id} todo={todo} />;
       })}
       {isGotAllTodos ? (
@@ -72,12 +78,12 @@ export const Done = ({ navigation }: any) => {
             <GotAll>더보기</GotAll>
           </TouchableOpacity>
         )
-      )}
+      )} */}
     </TodoContainer>
   );
 };
 
-const TodoContainer = styled.ScrollView`
+const TodoContainer = styled.View`
   flex: 1;
   flex-direction: column;
 `;
