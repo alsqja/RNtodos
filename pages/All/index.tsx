@@ -9,7 +9,7 @@ import { Done } from "../../components/Done";
 import { Expiration } from "../../components/Expiration";
 import { MyPage } from "../../components/MyPage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
-import { Alert, BackHandler } from "react-native";
+import { Alert, BackHandler, View } from "react-native";
 
 interface ITodos {
   id: number;
@@ -21,6 +21,7 @@ interface ITodos {
 
 export const All = ({ navigation }: any) => {
   const [curPage, setCurpage] = useState("all");
+  const pageList = ["all", "today", "done", "expiration", "mypage"];
 
   // const routesParams = useRoute();
   useFocusEffect(

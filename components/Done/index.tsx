@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { RefreshControl, TouchableOpacity } from "react-native";
 import { useTodoList } from "../../hooks/todos";
 import styled from "styled-components/native";
 import { TodoBox } from "../TodoBox";
@@ -12,12 +12,21 @@ interface ITodos {
   is_done: boolean;
   createdAt: string;
 }
+const wait = (time: number) => {
+  return new Promise((resolve) => setTimeout(resolve, time));
+};
 
 export const Done = ({ navigation }: any) => {
   const [todos, setTodos] = useState<ITodos[]>([]);
   const [isGotAllTodos, setIsGotAllTodos] = useState(false);
   const [req, res] = useTodoList(navigation);
   const page = useRef(0);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const requestQuery = useCallback(() => {
     req({
@@ -56,7 +65,11 @@ export const Done = ({ navigation }: any) => {
   // }
 
   return (
-    <TodoContainer>
+    <TodoContainer
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {todos.map((todo) => {
         return <TodoBox key={todo.id} todo={todo} />;
       })}

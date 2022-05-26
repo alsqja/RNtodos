@@ -11,7 +11,6 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import { All } from "./pages/All";
-import { Header } from "./components/Header";
 import styled from "styled-components/native";
 import { theme } from "./styled/theme";
 import { StatusBar } from "expo-status-bar";

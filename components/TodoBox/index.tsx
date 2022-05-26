@@ -1,7 +1,6 @@
 import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
 import { todayMaker } from "../../functions/time";
 import { useEditTodo } from "../../hooks/todos";
 import { theme } from "../../styled/theme";
