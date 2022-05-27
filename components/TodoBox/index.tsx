@@ -1,8 +1,15 @@
 import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TouchableHighlight,
+  Alert,
+} from "react-native";
 import { todayMaker } from "../../functions/time";
-import { useEditTodo } from "../../hooks/todos";
+import { useDeleteTodo, useEditTodo } from "../../hooks/todos";
 import { theme } from "../../styled/theme";
 
 interface ITodo {
@@ -22,6 +29,8 @@ export const TodoBox = ({ todo }: IProps) => {
   const isDead = +values.expiration_date < new Date(todayMaker()).getTime();
   const [isChecked, setIsChecked] = useState(!!todo.is_done);
   const [editreq, editres] = useEditTodo();
+  const [deleteReq, deleteRes] = useDeleteTodo();
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDone = async () => {
     try {
@@ -32,36 +41,76 @@ export const TodoBox = ({ todo }: IProps) => {
     }
   };
 
+  const handleDelete = () => {
+    Alert.alert("삭제하기", "삭제하시겠습니까?", [
+      {
+        text: "취소",
+      },
+      {
+        text: "확인",
+        onPress: async () => {
+          if (deleteRes.loading) return;
+
+          try {
+            await deleteReq(values.id);
+          } catch (e) {
+            console.log(e);
+          }
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    if (deleteRes.called) {
+      setIsDeleted(true);
+    }
+  }, [deleteRes.called]);
+
+  if (isDeleted) return <></>;
+
   return (
-    <View
+    <TouchableHighlight
+      onLongPress={handleDelete}
       style={{
         ...styles.container,
-        backgroundColor: isDead ? "red" : theme.todoBg,
+        width: "90%",
+        marginLeft: "5%",
+        marginVertical: 10,
       }}
     >
-      <Checkbox
-        value={isChecked}
-        style={styles.checkbox}
-        onValueChange={handleDone}
-        color={isChecked ? "blue" : ""}
-      />
-      <Text
+      <View
         style={{
-          ...styles.contents,
-          textDecorationLine: isChecked ? "line-through" : "none",
+          ...styles.container,
+          backgroundColor: isDead ? "red" : theme.todoBg,
+          paddingVertical: 10,
+          paddingHorizontal: 10,
         }}
       >
-        {values.contents}
-      </Text>
-      <Text
-        style={{
-          ...styles.expiration_date,
-          textDecorationLine: isChecked ? "line-through" : "none",
-        }}
-      >
-        {todayMaker(values.expiration_date)}
-      </Text>
-    </View>
+        <Checkbox
+          value={isChecked}
+          style={styles.checkbox}
+          onValueChange={handleDone}
+          color={isChecked ? "blue" : ""}
+        />
+        <Text
+          style={{
+            ...styles.contents,
+            textDecorationLine: isChecked ? "line-through" : "none",
+          }}
+        >
+          {values.contents}
+        </Text>
+        <Text
+          style={{
+            ...styles.expiration_date,
+            textDecorationLine: isChecked ? "line-through" : "none",
+          }}
+        >
+          {todayMaker(values.expiration_date)}
+        </Text>
+      </View>
+    </TouchableHighlight>
   );
 };
 
@@ -70,12 +119,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     // justifyContent: "space-between",
-    width: "90%",
-    marginLeft: "5%",
+    // width: "90%",
+    // marginLeft: "5%",
     borderRadius: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    marginVertical: 10,
   },
   contents: {
     color: theme.color,

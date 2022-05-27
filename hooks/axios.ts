@@ -15,8 +15,7 @@ export type UseAxiosType = [
 ];
 
 const apiAxios = Axios.create({
-  baseURL:
-    Platform.OS === "ios" ? "http://localhost:4000" : "http://10.0.2.2:4000",
+  baseURL: "http://ec2-52-79-226-232.ap-northeast-2.compute.amazonaws.com/",
 });
 
 export const useAxios = (): UseAxiosType => {

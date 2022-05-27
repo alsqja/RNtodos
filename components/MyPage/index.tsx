@@ -35,6 +35,9 @@ export const MyPage = ({ navigation }: any) => {
         });
         sum += res.data[key];
       }
+      if (sum === 0) {
+        sum = 1;
+      }
       setSum(sum);
       setOptions(op);
     }

@@ -25,8 +25,13 @@ export const Total = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
+    // setTodos([]);
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => {
+      page.current = 0;
+      requestQuery();
+      setRefreshing(false);
+    });
   }, []);
 
   const requestQuery = useCallback(() => {
@@ -50,7 +55,14 @@ export const Total = ({ navigation }: any) => {
         setIsGotAllTodos(true);
         return;
       }
-      if (todos.filter((todo) => todo.id === res.data[0].id).length > 0) {
+      if (
+        todos.filter(
+          (todo) =>
+            todo.id === res.data[0].id ||
+            todo.id === res.data[res.data.length - 1].id
+        ).length > 0
+      ) {
+        // setTodos(res.data);
         return;
       }
       setTodos([...todos, ...res.data]);

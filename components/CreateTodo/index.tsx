@@ -3,6 +3,7 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
+  Alert,
   Platform,
   StyleSheet,
   Text,
@@ -32,6 +33,10 @@ export const CreateTodo = ({ handleCreate }: IProps) => {
   const [req, res] = usePostTodo();
 
   const handleSubmit = async () => {
+    if (contents === "") {
+      Alert.alert("내용을 입력해주세요.");
+      return;
+    }
     try {
       await req(
         contents,
@@ -66,7 +71,9 @@ export const CreateTodo = ({ handleCreate }: IProps) => {
         placeholder="Input TODO"
         style={styles.input}
         value={contents}
-        onChangeText={(text) => setContents(text)}
+        onChangeText={(text) => {
+          setContents(text);
+        }}
         autoCapitalize="none"
       />
       {Platform.OS === "ios" ? (
